@@ -3,6 +3,7 @@ import './App.css';
 import Header from './components/Header';
 import Password from './components/Password';
 import Settings from './components/Settings';
+import { PasswordGenerator } from './components/PasswordGenerator';
 
 // Define the state shape for password settings
 export interface PasswordState {
@@ -98,11 +99,10 @@ const App: React.FC = () => {
 
   return (
     <PasswordGContext.Provider value={{ state, dispatch }}>
-      <div className="container mx-auto h-screen flex flex-col justify-center items-center">
+      <section className="container mx-auto h-screen">
         <Header />
-        <Password />
-        <Settings />
-      </div>
+        <PasswordGenerator />
+      </section>
     </PasswordGContext.Provider>
   );
 }
