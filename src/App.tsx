@@ -1,8 +1,6 @@
 import React, { useReducer } from 'react';
 import './App.css';
 import Header from './components/Header';
-import Password from './components/Password';
-import Settings from './components/Settings';
 import { PasswordGenerator } from './components/PasswordGenerator';
 
 // Define the state shape for password settings
