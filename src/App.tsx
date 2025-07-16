@@ -43,10 +43,13 @@ function passwordReducer(state: PasswordState, action: PasswordAction): Password
       };
     }
     case 'updatePasswordLength': {
-      return {
-        ...state,
-        passwordLength: action.next,
-      };
+      if(action.next >= 7) {
+        return {
+          ...state,
+          passwordLength: action.next,
+        };
+      }
+      return state;
     }
     case 'toggleEnableNumbers': {
       return {

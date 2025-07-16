@@ -15,8 +15,11 @@ const Settings: React.FC = () => {
     return (
         <div className="p-5 flex flex-col">
             <div className="flex flex-col mb-4">
-                <label htmlFor="password_length" className="text-sm">Password Length : ({state.passwordLength})</label>
-                <input type="range" value={state.passwordLength} min={7} max={100} name="password_length" id="password_length" onChange={(e) => dispatch({ type: "updatePasswordLength", next: e.target.valueAsNumber })} />
+                <label htmlFor="password_length" className="text-sm mb-2">Password Length : ({state.passwordLength})</label>
+                <div className="range-wrapper">
+                    <input className="custom-range-slider" type="range" value={state.passwordLength} min={0} max={26} name="password_length" id="password_length" onChange={(e) => dispatch({ type: "updatePasswordLength", next: e.target.valueAsNumber })} />
+                    <output htmlFor="slider" className="thumb-tooltip"></output>
+                </div>
             </div>
 
             <div id="rules" className="flex flex-wrap gap-6 mt-4">
