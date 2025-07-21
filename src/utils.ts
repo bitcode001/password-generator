@@ -31,8 +31,8 @@
 // 91 - 96
 // 123 - 126
 
-interface IGetPass {
-    addNumebrs: boolean;
+export interface IGetPass {
+    addNumbers: boolean;
     addCapitalLetters: boolean;
     addSmallLetters: boolean;
     addSpecialCharacters: boolean;
@@ -58,7 +58,7 @@ export function getPass(passParams: IGetPass): string {
         passSet.push(capitalLetterSet);
     }
 
-    if(passParams.addNumebrs) {
+    if(passParams.addNumbers) {
         passSet.push(numberSet);
     }
 

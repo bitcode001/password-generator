@@ -2,6 +2,7 @@ import React, { useReducer } from 'react';
 import './App.css';
 import Header from './components/Header';
 import { PasswordGenerator } from './components/PasswordGenerator';
+import { getPass, type IGetPass } from './utils';
 
 // Define the state shape for password settings
 export interface PasswordState {
@@ -35,6 +36,27 @@ export const PasswordGContext = React.createContext<PasswordContextType | undefi
 
 // The password reducer is typed now
 function passwordReducer(state: PasswordState, action: PasswordAction): PasswordState {
+  // Middleware to validate action
+  const avoidRemovingEverything: () => boolean = () => {
+    const flagCount = [state.enableNumbers, state.enableSymbols, state.enableLowercase, state.enableUppercase];
+    if(flagCount.filter(Boolean).length === 1) return true;
+
+    return false;
+  }
+
+  const newPass: (newPassProps: IGetPass) => string = (newPassProps) => {
+
+    const generatedPass: string = getPass({
+        addCapitalLetters: newPassProps.addCapitalLetters,
+        addSmallLetters: newPassProps.addSmallLetters,
+        addNumbers: newPassProps.addNumbers,
+        addSpecialCharacters: newPassProps.addSpecialCharacters,
+        passwordLength: newPassProps.passwordLength
+    });
+
+    return generatedPass;
+  }
+
   switch (action.type) {
     case 'updatePassword': {
       return {
@@ -52,16 +74,38 @@ function passwordReducer(state: PasswordState, action: PasswordAction): Password
       return state;
     }
     case 'toggleEnableNumbers': {
-      return {
-        ...state,
-        enableNumbers: !state.enableNumbers,
-      };
+      if(state.enableNumbers && avoidRemovingEverything()) {
+        return state;
+      } else {
+        return {
+          ...state,
+          enableNumbers: !state.enableNumbers,
+          password: newPass({
+            addCapitalLetters: state.enableUppercase,
+            addSmallLetters: state.enableLowercase,
+            addNumbers: !state.enableNumbers,
+            addSpecialCharacters: state.enableSymbols,
+            passwordLength: state.passwordLength
+          }),
+        };
+      }
     }
     case 'toggleEnableSymbols': {
-      return {
-        ...state,
-        enableSymbols: !state.enableSymbols,
-      };
+      if(state.enableSymbols && avoidRemovingEverything()) {
+        return state;
+      } else {
+        return {
+          ...state,
+          enableSymbols: !state.enableSymbols,
+          password: newPass({
+            addCapitalLetters: state.enableUppercase,
+            addSmallLetters: state.enableLowercase,
+            addNumbers: state.enableNumbers,
+            addSpecialCharacters: !state.enableSymbols,
+            passwordLength: state.passwordLength
+          }),
+        };
+      }
     }
     case 'toggleEnableAlphabetCharacters': {
       return {
@@ -70,16 +114,38 @@ function passwordReducer(state: PasswordState, action: PasswordAction): Password
       };
     }
     case 'toggleEnableUppercase': {
-      return {
-        ...state,
-        enableUppercase: !state.enableUppercase,
-      };
+      if(state.enableUppercase && avoidRemovingEverything()) {
+        return state;
+      } else {
+        return {
+          ...state,
+          enableUppercase: !state.enableUppercase,
+          password: newPass({
+            addCapitalLetters: !state.enableUppercase,
+            addSmallLetters: state.enableLowercase,
+            addNumbers: state.enableNumbers,
+            addSpecialCharacters: state.enableSymbols,
+            passwordLength: state.passwordLength
+          }),
+        };
+      }
     }
     case 'toggleEnableLowercase': {
-      return {
-        ...state,
-        enableLowercase: !state.enableLowercase,
-      };
+      if(state.enableLowercase && avoidRemovingEverything()) {
+        return state;
+      } else {
+        return {
+          ...state,
+          enableLowercase: !state.enableLowercase,
+          password: newPass({
+            addCapitalLetters: state.enableUppercase,
+            addSmallLetters: !state.enableLowercase,
+            addNumbers: state.enableNumbers,
+            addSpecialCharacters: state.enableSymbols,
+            passwordLength: state.passwordLength
+          }),
+        }
+      }
     }
     default: {
       throw new Error("Unknown action type");

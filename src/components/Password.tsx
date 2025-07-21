@@ -14,11 +14,11 @@ const Password: React.FC = () => {
     const svgFillColor = '#191a1c';
 
     const generatePassword = () => {
-        console.log('State: ', state);
+        // console.log('State: ', state);
         const generatedPass: string = getPass({
             addCapitalLetters: state.enableUppercase,
             addSmallLetters: state.enableLowercase,
-            addNumebrs: state.enableNumbers,
+            addNumbers: state.enableNumbers,
             addSpecialCharacters: state.enableSymbols,
             passwordLength: state.passwordLength
         });
