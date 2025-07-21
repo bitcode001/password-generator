@@ -43,10 +43,10 @@ const Settings: React.FC = () => {
                     <label htmlFor="enable_symbols">Enable Symbols</label>
                 </div>
 
-                <div className={rulesClass}>
+                {/* <div className={rulesClass}>
                     <input type="checkbox" checked={state.enableAlphabetCharacters} name="enable_alphabet" id="enable_alphabet" onChange={() => dispatch({ type: "toggleEnableAlphabetCharacters" })} />
                     <label htmlFor="enable_alphabet">Enable AlphabetCharacters</label>
-                </div>
+                </div> */}
             </div>
         </div>
     )
